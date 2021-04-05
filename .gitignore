@@ -1,9 +1,5 @@
 /passwords.py
+/charge_points.geojson
+/charge_points_region.geojson
+/mcds.geojson
 /.idea
-/.idea/.name
-/.idea/charge_api.iml
-/.idea/misc.xml
-/.idea/modules.xml
-/.idea/inspectionProfiles/profiles_settings.xml
-/.idea/inspectionProfiles/Project_Default.xml
-/.idea/workspace.xml

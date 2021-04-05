@@ -10,11 +10,15 @@ from arcgis.features import FeatureLayerCollection
 import passwords
 
 ago_url = "https://semcog.maps.arcgis.com"
-gis = GIS(ago_url, passwords.my_user_name, passwords.my_password)
+gis = GIS(ago_url, passwords.user_name, passwords.password)
 
 r = requests.get(
     'https://developer.nrel.gov/api/alt-fuel-stations/v1.geojson?fuel_type=ELEC&state=MI&api_key=dfi1k14gwsgv5PkXuzpdD62zHoTv2ZUQm4N4tJ5j')
 data = r.json()
+
+for feature in data['features']:
+    if feature['properties']['ev_connector_types']:
+        feature['properties']['ev_connector_types'] = ', '.join(feature['properties']['ev_connector_types'])
 
 with open('charge_points.geojson', 'w') as charge_points:
     json.dump(data, charge_points)
@@ -31,13 +35,13 @@ used_columns = ['access_code', 'access_days_time', 'access_detail_code',
                     'intersection_directions', 'plus4', 'state', 'street_address', 'zip',
                     'country', 'ev_dc_fast_num', 'ev_level1_evse_num',
                     'ev_level2_evse_num', 'ev_network', 'ev_network_web', 'ev_other_evse',
-                    'ev_pricing', 'ev_renewable_source', 'ev_network_ids',
+                    'ev_pricing', 'ev_renewable_source', 'ev_network_ids', 'ev_connector_types',
                     'federal_agency', 'geometry',
-                    'SEMMCD', 'NAME', 'COUNTY']
+                    'SEMMCD', 'NAME', 'COUNTY', 'county_name']
 join_cleaned = join[used_columns]
 join_cleaned.to_file('charge_points_region.geojson', driver='GeoJSON', RFC7946='YES')
 
-charge_layer = gis.content.search('title:charge_points_semcog owner:misiuk_SEMCOG type:Feature Service')
+charge_layer = gis.content.search('title:charge_points_semcog owner:makari_SEMCOG type:Feature Service')
 
 # to init a feature layer
 if not charge_layer:
@@ -46,6 +50,7 @@ if not charge_layer:
     geojson_item = gis.content.add(item_properties=item_prop, data='charge_points_region.geojson')
     charge_points_item = geojson_item.publish()
     charge_points_item.share(org=True, everyone=False)
+    charge_points_item.reassign_to(target_owner='makari_SEMCOG')
 else:
     print('overwriting charge layer')
     charge_points_flayer_collection = FeatureLayerCollection.fromitem(charge_layer[0])
