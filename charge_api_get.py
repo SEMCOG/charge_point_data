@@ -1,10 +1,6 @@
 import requests
 import json
-import pandas as pd
-import numpy as np
 import geopandas as gpd
-import shapely
-import fiona
 from arcgis.gis import GIS
 from arcgis.features import FeatureLayerCollection
 import passwords
