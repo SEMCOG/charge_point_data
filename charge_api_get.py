@@ -24,16 +24,16 @@ mcds = gpd.read_file('mcds.geojson')
 join = gpd.sjoin(charge_points_file, mcds, how="inner", op="intersects")
 
 used_columns = ['access_code', 'access_days_time', 'access_detail_code',
-                    'cards_accepted', 'date_last_confirmed', 'expected_date',
-                    'fuel_type_code', 'groups_with_access_code', 'id', 'open_date',
-                    'owner_type_code', 'status_code', 'station_name', 'station_phone',
-                    'updated_at', 'facility_type', 'geocode_status', 'city',
-                    'intersection_directions', 'plus4', 'state', 'street_address', 'zip',
-                    'country', 'ev_dc_fast_num', 'ev_level1_evse_num',
-                    'ev_level2_evse_num', 'ev_network', 'ev_network_web', 'ev_other_evse',
-                    'ev_pricing', 'ev_renewable_source', 'ev_network_ids', 'ev_connector_types',
-                    'federal_agency', 'geometry',
-                    'SEMMCD', 'NAME', 'COUNTY', 'county_name']
+                'cards_accepted', 'date_last_confirmed', 'expected_date',
+                'fuel_type_code', 'groups_with_access_code', 'id', 'open_date',
+                'owner_type_code', 'status_code', 'station_name', 'station_phone',
+                'updated_at', 'facility_type', 'geocode_status', 'city',
+                'intersection_directions', 'plus4', 'state', 'street_address', 'zip',
+                'country', 'ev_dc_fast_num', 'ev_level1_evse_num',
+                'ev_level2_evse_num', 'ev_network', 'ev_network_web', 'ev_other_evse',
+                'ev_pricing', 'ev_renewable_source', 'ev_network_ids', 'ev_connector_types',
+                'federal_agency', 'geometry',
+                'SEMMCD', 'NAME', 'COUNTY', 'county_name']
 join_cleaned = join[used_columns]
 join_cleaned.to_file('charge_points_region.geojson', driver='GeoJSON', RFC7946='YES')
 
