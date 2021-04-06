@@ -4,6 +4,7 @@ import geopandas as gpd
 from arcgis.gis import GIS
 from arcgis.features import FeatureLayerCollection
 import passwords
+import urllib.request
 
 ago_url = "https://semcog.maps.arcgis.com"
 gis = GIS(ago_url, passwords.user_name, passwords.password)
@@ -51,3 +52,6 @@ else:
     print('overwriting charge layer')
     charge_points_flayer_collection = FeatureLayerCollection.fromitem(charge_layer[0])
     charge_points_flayer_collection.manager.overwrite('charge_points_region.geojson')
+
+
+urllib.request.urlopen('https://hc-ping.com/2143bf85-2b51-45fc-ad0f-46e8ba86d239')
