@@ -35,10 +35,26 @@ used_columns = ['access_code', 'access_days_time', 'access_detail_code',
                 'ev_pricing', 'ev_renewable_source', 'ev_network_ids', 'ev_connector_types',
                 'federal_agency', 'geometry',
                 'SEMMCD', 'NAME', 'COUNTY', 'county_name']
+
+used_state_columns = ['access_code', 'access_days_time', 'access_detail_code',
+                      'cards_accepted', 'date_last_confirmed', 'expected_date',
+                      'fuel_type_code', 'groups_with_access_code', 'id', 'open_date',
+                      'owner_type_code', 'status_code', 'station_name', 'station_phone',
+                      'updated_at', 'facility_type', 'geocode_status', 'city',
+                      'intersection_directions', 'plus4', 'state', 'street_address', 'zip',
+                      'country', 'ev_dc_fast_num', 'ev_level1_evse_num',
+                      'ev_level2_evse_num', 'ev_network', 'ev_network_web', 'ev_other_evse',
+                      'ev_pricing', 'ev_renewable_source', 'ev_network_ids', 'ev_connector_types',
+                      'federal_agency', 'geometry']
+
 join_cleaned = join[used_columns]
 join_cleaned.to_file('charge_points_region.geojson', driver='GeoJSON', RFC7946='YES')
 
+state_cleaned = charge_points_file[used_state_columns]
+state_cleaned.to_file('charge_points_state.geojson', driver='GeoJSON', RFC7946='YES')
+
 charge_layer = gis.content.search('title:charge_points_semcog owner:makari_SEMCOG type:Feature Service')
+state_charge_layer = gis.content.search('title:charge_points_state owner:makari_SEMCOG type:Feature Service')
 
 # to init a feature layer
 if not charge_layer:
@@ -53,5 +69,16 @@ else:
     charge_points_flayer_collection = FeatureLayerCollection.fromitem(charge_layer[0])
     charge_points_flayer_collection.manager.overwrite('charge_points_region.geojson')
 
+if not state_charge_layer:
+    print('publishing new state charge layer')
+    state_item_prop = {'title': 'charge_points_state', 'type': 'GeoJson', 'overwrite': 'true'}
+    state_geojson_item = gis.content.add(item_properties=state_item_prop, data='charge_points_state.geojson')
+    state_charge_points_item = state_geojson_item.publish()
+    state_charge_points_item.share(org=True, everyone=False)
+    state_charge_points_item.reassign_to(target_owner='makari_SEMCOG')
+else:
+    print('overwriting state charge layer')
+    state_charge_points_flayer_collection = FeatureLayerCollection.fromitem(state_charge_layer[0])
+    state_charge_points_flayer_collection.manager.overwrite('charge_points_state.geojson')
 
 urllib.request.urlopen('https://hc-ping.com/2143bf85-2b51-45fc-ad0f-46e8ba86d239')
