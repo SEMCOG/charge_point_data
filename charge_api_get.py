@@ -21,6 +21,11 @@ with open('charge_points.geojson', 'w') as charge_points:
     json.dump(data, charge_points)
 
 charge_points_file = gpd.read_file('charge_points.geojson')
+# remove nulls to make sure format of ev_dc_fast_num, ev_level1_evse_num, ev_level2_evse_num are numbers
+charge_points_file.loc[:, "ev_dc_fast_num"] = charge_points_file.loc[:, "ev_dc_fast_num"].fillna(0)
+charge_points_file.loc[:, "ev_level1_evse_num"] = charge_points_file.loc[:, "ev_level1_evse_num"].fillna(0)
+charge_points_file.loc[:, "ev_level2_evse_num"] = charge_points_file.loc[:, "ev_level2_evse_num"].fillna(0)
+
 mcds = gpd.read_file('mcds.geojson')
 join = gpd.sjoin(charge_points_file, mcds, how="inner", op="intersects")
 
