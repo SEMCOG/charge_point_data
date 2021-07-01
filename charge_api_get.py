@@ -16,6 +16,10 @@ data = r.json()
 for feature in data['features']:
     if feature['properties']['ev_connector_types']:
         feature['properties']['ev_connector_types'] = ', '.join(feature['properties']['ev_connector_types'])
+    if feature['properties']['intersection_directions']:
+        feature['properties']['intersection_directions'] = feature['properties']['intersection_directions'][:255]
+    if feature['properties']['access_days_time']:
+        feature['properties']['access_days_time'] = feature['properties']['access_days_time'][:255]
 
 with open('charge_points.geojson', 'w') as charge_points:
     json.dump(data, charge_points)
@@ -33,7 +37,7 @@ used_columns = ['access_code', 'access_days_time', 'access_detail_code',
                 'cards_accepted', 'date_last_confirmed', 'expected_date',
                 'fuel_type_code', 'groups_with_access_code', 'id', 'open_date',
                 'owner_type_code', 'status_code', 'station_name', 'station_phone',
-                'updated_at', 'facility_type', 'geocode_status', 'city', 'plus4',
+                'updated_at', 'facility_type', 'geocode_status', 'city', 'intersection_directions', 'plus4',
                 'state', 'street_address', 'zip',
                 'country', 'ev_dc_fast_num', 'ev_level1_evse_num',
                 'ev_level2_evse_num', 'ev_network', 'ev_network_web', 'ev_other_evse',
@@ -45,7 +49,7 @@ used_state_columns = ['access_code', 'access_days_time', 'access_detail_code',
                       'cards_accepted', 'date_last_confirmed', 'expected_date',
                       'fuel_type_code', 'groups_with_access_code', 'id', 'open_date',
                       'owner_type_code', 'status_code', 'station_name', 'station_phone',
-                      'updated_at', 'facility_type', 'geocode_status', 'city',
+                      'updated_at', 'facility_type', 'geocode_status', 'city', 'intersection_directions',
                       'plus4', 'state', 'street_address', 'zip',
                       'country', 'ev_dc_fast_num', 'ev_level1_evse_num',
                       'ev_level2_evse_num', 'ev_network', 'ev_network_web', 'ev_other_evse',
