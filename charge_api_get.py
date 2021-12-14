@@ -75,7 +75,7 @@ if not charge_layer:
     charge_points_item.reassign_to(target_owner='makari_SEMCOG')
 else:
     print('overwriting charge layer')
-    charge_points_flayer_collection = FeatureLayerCollection.fromitem(charge_layer[0])
+    charge_points_flayer_collection = FeatureLayerCollection.fromitem(gis.content.get('250cd7e1b482466b960e2f1a25ee4023'))
     charge_points_flayer_collection.manager.overwrite('charge_points_region.geojson')
 
 if not state_charge_layer:
@@ -87,7 +87,7 @@ if not state_charge_layer:
     state_charge_points_item.reassign_to(target_owner='makari_SEMCOG')
 else:
     print('overwriting state charge layer')
-    state_charge_points_flayer_collection = FeatureLayerCollection.fromitem(state_charge_layer[0])
+    state_charge_points_flayer_collection = FeatureLayerCollection.fromitem(gis.content.get('8ccd7b89ff91431988c8f077470b6ac7'))
     state_charge_points_flayer_collection.manager.overwrite('charge_points_state.geojson')
 
 urllib.request.urlopen('https://hc-ping.com/2143bf85-2b51-45fc-ad0f-46e8ba86d239')
