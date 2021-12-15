@@ -71,7 +71,7 @@ if not charge_layer:
     item_prop = {'title': 'charge_points_semcog', 'type': 'GeoJson', 'overwrite': 'true'}
     geojson_item = gis.content.add(item_properties=item_prop, data='charge_points_region.geojson')
     charge_points_item = geojson_item.publish()
-    charge_points_item.share(org=True, everyone=False)
+    charge_points_item.share(org=True, everyone=True)
     charge_points_item.reassign_to(target_owner='makari_SEMCOG')
 else:
     print('overwriting charge layer')
@@ -83,7 +83,7 @@ if not state_charge_layer:
     state_item_prop = {'title': 'charge_points_state', 'type': 'GeoJson', 'overwrite': 'true'}
     state_geojson_item = gis.content.add(item_properties=state_item_prop, data='charge_points_state.geojson')
     state_charge_points_item = state_geojson_item.publish()
-    state_charge_points_item.share(org=True, everyone=False)
+    state_charge_points_item.share(org=True, everyone=True)
     state_charge_points_item.reassign_to(target_owner='makari_SEMCOG')
 else:
     print('overwriting state charge layer')
