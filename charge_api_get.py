@@ -20,6 +20,8 @@ for feature in data['features']:
         feature['properties']['intersection_directions'] = feature['properties']['intersection_directions'][:255]
     if feature['properties']['access_days_time']:
         feature['properties']['access_days_time'] = feature['properties']['access_days_time'][:255]
+    if feature['properties']['station_name']:
+        feature['properties']['station_name'] = feature['properties']['station_name'].replace('\u200b', '')
 
 with open('charge_points.geojson', 'w') as charge_points:
     json.dump(data, charge_points)
