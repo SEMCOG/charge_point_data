@@ -33,7 +33,9 @@ charge_points_file.loc[:, "ev_level1_evse_num"] = charge_points_file.loc[:, "ev_
 charge_points_file.loc[:, "ev_level2_evse_num"] = charge_points_file.loc[:, "ev_level2_evse_num"].fillna(0)
 
 mcds = gpd.read_file('mcds.geojson')
+mcds_state = gpd.read_file('state_charge_mcds.geojson')
 join = gpd.sjoin(charge_points_file, mcds, how="inner", op="intersects")
+join_state = gpd.sjoin(charge_points_file, mcds_state, how="inner", op="intersects")
 
 used_columns = ['access_code', 'access_days_time', 'access_detail_code',
                 'cards_accepted', 'date_last_confirmed', 'expected_date',
@@ -56,12 +58,13 @@ used_state_columns = ['access_code', 'access_days_time', 'access_detail_code',
                       'country', 'ev_dc_fast_num', 'ev_level1_evse_num',
                       'ev_level2_evse_num', 'ev_network', 'ev_network_web', 'ev_other_evse',
                       'ev_pricing', 'ev_renewable_source', 'ev_network_ids', 'ev_connector_types',
-                      'federal_agency', 'geometry']
+                      'federal_agency', 'geometry',
+                      'SEMMCD', 'NAME', 'COUNTY', 'county_name', 'region_id', 'region_name']
 
 join_cleaned = join[used_columns]
 join_cleaned.to_file('charge_points_region.geojson', driver='GeoJSON', RFC7946='YES')
 
-state_cleaned = charge_points_file[used_state_columns]
+state_cleaned = join_state[used_state_columns]
 state_cleaned.to_file('charge_points_state.geojson', driver='GeoJSON', RFC7946='YES')
 
 charge_layer = gis.content.search('title:charge_points_semcog owner:makari_SEMCOG type:Feature Service')
